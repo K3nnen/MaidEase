@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'signup.dart';
+import 'mainmenu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +19,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Login Page
 class LoginPage extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -81,7 +82,12 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegistrationScreen()),
+                  );
+                },
                 child: const Text(
                   'Sign Up',
                   style: TextStyle(
@@ -100,8 +106,7 @@ class LoginPage extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white10,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -114,105 +119,6 @@ class LoginPage extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-// Home Page (after Sign In)
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  Spacer(),
-                  Text(
-                    'MaidEase',
-                    style: GoogleFonts.dancingScript(
-                      fontSize: 24,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Spacer(),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                children: [
-                  ImageCard(
-                      imagePath: 'assets/cleaning1.jpg',
-                      text: 'Step-by-Step Guides'),
-                  const SizedBox(height: 15),
-                  ImageCard(
-                      imagePath: 'assets/cleaning2.jpg',
-                      text: 'Safety Section'),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Custom Image Card Widget
-class ImageCard extends StatelessWidget {
-  final String imagePath;
-  final String text;
-
-  const ImageCard({required this.imagePath, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child: Stack(
-        children: [
-          Image.asset(imagePath,
-              fit: BoxFit.cover, width: double.infinity, height: 150),
-          Container(
-            width: double.infinity,
-            height: 150,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.black54, Colors.transparent],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-              ),
-            ),
-            child: Text(
-              text,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    color: Colors.black,
-                    blurRadius: 5,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
