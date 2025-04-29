@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'tracker.dart';
+import 'stepbystep.dart'; // Import StepByStepScreen
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(), // Show SplashScreen first
+      home: SplashScreen(),
     );
   }
 }
@@ -33,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()), // Go to HomePage
+        MaterialPageRoute(builder: (context) => HomePage()),
       );
     });
   }
@@ -49,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Text(
               'MaidEase',
               style: GoogleFonts.getFont(
-                'Lavishly Yours', // Use Lavishly Yours font
+                'Lavishly Yours',
                 fontSize: 50,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -141,7 +142,15 @@ class HomePage extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 children: [
-                  BoxPlaceholder(text: 'Step-by-Step Guides'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => stepbystep()),
+                      );
+                    },
+                    child: BoxPlaceholder(text: 'Step-by-Step Guides'),
+                  ),
                   const SizedBox(height: 15),
                   BoxPlaceholder(text: 'Safety Section'),
                 ],
@@ -156,7 +165,7 @@ class HomePage extends StatelessWidget {
 
 class BoxPlaceholder extends StatelessWidget {
   final String text;
-  const BoxPlaceholder({required this.text, super.key}); // Fix constructor
+  const BoxPlaceholder({required this.text, super.key});
 
   @override
   Widget build(BuildContext context) {
