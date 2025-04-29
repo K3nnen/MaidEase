@@ -22,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            // Profile Section
+     
             Container(
               padding: EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -50,7 +50,6 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            // To-Do List Section
             Container(
               padding: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
@@ -77,7 +76,6 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            // Add & Remove Task Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -118,7 +116,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Action Button Widget
+
   Widget _buildActionButton(String text, Color color) {
     return TextButton(
       onPressed: () {},
