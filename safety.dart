@@ -5,8 +5,12 @@ class SafetySectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor =
+        Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -15,17 +19,19 @@ class SafetySectionScreen extends StatelessWidget {
               child: Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    icon: Icon(Icons.arrow_back, color: textColor),
                     onPressed: () => Navigator.pop(context),
                   ),
                   const SizedBox(width: 10),
                   Text(
                     'Safety Section',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: textColor,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      shadows: [Shadow(color: Colors.black, blurRadius: 5)],
+                      shadows: isDark
+                          ? [Shadow(color: Colors.black, blurRadius: 5)]
+                          : [],
                     ),
                   ),
                 ],
@@ -42,7 +48,7 @@ class SafetySectionScreen extends StatelessWidget {
 4.  Store Safely – Keep chemicals in their original bottles...
 5.  Clean Tools Properly – Wash and dry tools after use...
                   ''',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: textColor, fontSize: 16),
                 ),
               ),
             ),
