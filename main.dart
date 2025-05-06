@@ -1,27 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'tracker.dart';
-import 'stepbystep.dart'; // Import StepByStepScreen
+import 'stepbystep.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.dark;
+
+  void toggleTheme() {
+    setState(() {
+      _themeMode =
+          _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      themeMode: _themeMode,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: Colors.white,
+        textTheme: GoogleFonts.poppinsTextTheme(),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+        textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
+      ),
+      home: SplashScreen(toggleTheme: toggleTheme),
     );
   }
 }
 
-// Splash Screen
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final VoidCallback toggleTheme;
+  const SplashScreen({required this.toggleTheme, super.key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -34,7 +59,9 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(
+          builder: (context) => HomePage(toggleTheme: widget.toggleTheme),
+        ),
       );
     });
   }
@@ -42,26 +69,26 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'MaidEase',
+              'MadeEase',
               style: GoogleFonts.getFont(
                 'Lavishly Yours',
                 fontSize: 50,
-                color: Colors.white,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 5),
             Text(
-              'Maid your life easier',
+              'Made your life easier',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white70,
+                color: Theme.of(context).textTheme.bodySmall!.color,
               ),
             ),
           ],
@@ -71,14 +98,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-// Home Page
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final VoidCallback toggleTheme;
+  const HomePage({required this.toggleTheme, super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -86,13 +115,18 @@ class HomePage extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
+                  IconButton(
+                    icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+                    color: Theme.of(context).iconTheme.color,
+                    onPressed: toggleTheme,
+                  ),
                   Spacer(),
                   Text(
-                    'MaidEase',
+                    'MadeEase',
                     style: GoogleFonts.getFont(
                       'Lavishly Yours',
                       fontSize: 30,
-                      color: Colors.white,
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -101,8 +135,6 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-
-            // Profile Icons with Border
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -114,7 +146,7 @@ class HomePage extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 30),
                 padding: EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: Colors.grey[900],
+                  color: isDark ? Colors.grey[900] : Colors.grey[300],
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Row(
@@ -124,12 +156,19 @@ class HomePage extends StatelessWidget {
                       padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
+                        border: Border.all(
+                          color: Theme.of(context).textTheme.bodyLarge!.color!,
+                          width: 2,
+                        ),
                       ),
                       child: CircleAvatar(
                         radius: 20,
-                        backgroundColor: Colors.black,
-                        child: Icon(Icons.person, color: Colors.white),
+                        backgroundColor: Theme.of(context)
+                            .scaffoldBackgroundColor
+                            .withOpacity(0.8),
+                        child: Icon(Icons.person,
+                            color:
+                                Theme.of(context).textTheme.bodyLarge!.color),
                       ),
                     );
                   }),
@@ -137,7 +176,6 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -169,21 +207,23 @@ class BoxPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       height: 150,
       decoration: BoxDecoration(
-        color: Colors.grey[800],
+        color: isDark ? Colors.grey[800] : Colors.grey[300],
         borderRadius: BorderRadius.circular(15),
       ),
       alignment: Alignment.center,
       child: Text(
         text,
         style: TextStyle(
-          color: Colors.white,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          shadows: [Shadow(color: Colors.black, blurRadius: 5)],
+          shadows: [Shadow(color: Colors.black26, blurRadius: 5)],
         ),
       ),
     );
