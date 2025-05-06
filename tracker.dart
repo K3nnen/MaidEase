@@ -3,27 +3,30 @@ import 'package:google_fonts/google_fonts.dart';
 import 'profile.dart'; // Import ProfileScreen
 
 class Tracker extends StatelessWidget {
-  // Change 'tracker' to 'Tracker'
-  const Tracker({super.key}); // Fix constructor
+  const Tracker({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
+    final tileColor = isDark ? Colors.grey[900]! : Colors.grey[200]!;
+    final avatarColor = isDark ? Colors.black : Colors.white;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          icon: Icon(Icons.arrow_back, color: textColor),
+          onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           "Family Tracker",
           style: GoogleFonts.dancingScript(
             fontSize: 24,
-            color: Colors.white,
+            color: textColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -33,10 +36,14 @@ class Tracker extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            _buildMemberTile(context, "Me", "Guardian", true),
-            _buildMemberTile(context, "Gian", "Guardian", false),
-            _buildMemberTile(context, "Maru", "Children", false),
-            _buildMemberTile(context, "Dominic", "Children", false),
+            _buildMemberTile(context, "Me", "Guardian", true, tileColor,
+                avatarColor, textColor),
+            _buildMemberTile(context, "Gian", "Guardian", false, tileColor,
+                avatarColor, textColor),
+            _buildMemberTile(context, "Maru", "Children", false, tileColor,
+                avatarColor, textColor),
+            _buildMemberTile(context, "Dominic", "Children", false, tileColor,
+                avatarColor, textColor),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -52,38 +59,39 @@ class Tracker extends StatelessWidget {
   }
 
   Widget _buildMemberTile(
-      BuildContext context, String name, String role, bool isCurrentUser) {
+    BuildContext context,
+    String name,
+    String role,
+    bool isCurrentUser,
+    Color tileColor,
+    Color avatarBg,
+    Color textColor,
+  ) {
     return GestureDetector(
       onTap: isCurrentUser
-          ? () {
-              Navigator.push(
+          ? () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
-              );
-            }
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              )
           : null,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5),
-        padding: EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.grey[900],
+          color: tileColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: Colors.black,
-            child: Icon(Icons.person, color: Colors.white),
+            backgroundColor: avatarBg,
+            child: Icon(Icons.person, color: textColor),
           ),
-          title: Text(
-            name,
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-          subtitle: Text(
-            role,
-            style: TextStyle(color: Colors.white70, fontSize: 14),
-          ),
+          title: Text(name, style: TextStyle(color: textColor, fontSize: 18)),
+          subtitle: Text(role,
+              style:
+                  TextStyle(color: textColor.withOpacity(0.7), fontSize: 14)),
           trailing: isCurrentUser
-              ? Icon(Icons.arrow_outward, color: Colors.white)
+              ? Icon(Icons.arrow_outward, color: textColor)
               : null,
         ),
       ),
