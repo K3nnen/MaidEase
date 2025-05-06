@@ -6,13 +6,17 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor =
+        Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: textColor),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -22,38 +26,37 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-     
             Container(
               padding: EdgeInsets.all(15),
               decoration: BoxDecoration(
-                color: Colors.grey[900],
+                color: isDark ? Colors.grey[900] : Colors.grey[300],
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundColor: Colors.black,
-                    child: Icon(Icons.person, color: Colors.white, size: 40),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    child: Icon(Icons.person, color: textColor, size: 40),
                   ),
                   const SizedBox(height: 5),
                   Text(
                     "Me",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: TextStyle(color: textColor, fontSize: 18),
                   ),
                   Text(
                     "Guardian",
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                    style: TextStyle(
+                        color: textColor.withOpacity(0.7), fontSize: 14),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 10),
-
             Container(
               padding: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
-                color: Colors.grey[900],
+                color: isDark ? Colors.grey[900] : Colors.grey[300],
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -62,20 +65,19 @@ class ProfileScreen extends StatelessWidget {
                     "To Do List",
                     style: GoogleFonts.dancingScript(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: textColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Divider(color: Colors.white54),
-                  _buildTaskItem("10:00AM", "Cook Meal"),
-                  _buildTaskItem("12:00NN", "Laundry Cleaning"),
-                  _buildTaskItem("4:00PM", "Clean Living Room"),
-                  _buildTaskItem("4:00PM", "Make The Bed"),
+                  Divider(color: textColor.withOpacity(0.5)),
+                  _buildTaskItem("10:00AM", "Cook Meal", textColor),
+                  _buildTaskItem("12:00NN", "Laundry Cleaning", textColor),
+                  _buildTaskItem("4:00PM", "Clean Living Room", textColor),
+                  _buildTaskItem("4:00PM", "Make The Bed", textColor),
                 ],
               ),
             ),
             const SizedBox(height: 10),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -89,33 +91,25 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Task Item Widget
-  Widget _buildTaskItem(String time, String task) {
+  Widget _buildTaskItem(String time, String task, Color textColor) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: textColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              time,
-              style: TextStyle(color: Colors.white, fontSize: 14),
-            ),
-            Text(
-              "• $task",
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
+            Text(time, style: TextStyle(color: textColor, fontSize: 14)),
+            Text("• $task", style: TextStyle(color: textColor, fontSize: 16)),
           ],
         ),
       ),
     );
   }
-
 
   Widget _buildActionButton(String text, Color color) {
     return TextButton(
